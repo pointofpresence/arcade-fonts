@@ -1,36 +1,24 @@
 # pylint: disable=missing-module-docstring
 
-CHAR_CODES = [
-    0, 0, 32,
-    48, 49, 50, 51, 52,  # 0-4
-
-    53, 54, 55,  # 5-7
-    56, 57,  # 8-9
-    65, 66, 67,  # A,B,C
-
-    68, 69, 70,  # D,E,F
-    71, 72, 73, 74, 75,  # G,H,I,J,K
-
-    76, 77, 78,  # L,M,N
-    79, 80, 81, 82, 83,  # O,P,Q,R,S
-
-    84, 85, 86,  # T,U,V
-    87, 88, 89, 90,  # W,X,Y,Z
-    45,  # -
-
-    123, 124, 125, 169,  # # ? ! ©
-    0,
-    44, 46, 58,  # , . :
-
-    61,  # =
-    0, 0, 0, 0, 0, 0, 0,
-
-    0, 0, 0,
-    43, 40,  # + (
-    0, 0, 0,
-
-    9,  # _
-    0, 0,
-    37, 41, 59, 47,  # % ) ; /
-    0,
+CHARS = [
+    None, None, None, "0", "1", "2", "3", "4",
+    "5", "6", "7", "8", "9", "A", "B", "C",
+    "D", "E", "F", "G", "H", "I", "J", "K",
+    "L", "M", "N", "O", "P", "Q", "R", "S",
+    "T", "U", "V", "W", "X", "Y", "Z", "-",
+    "#", "?", "!", "©", None, ",", ".", ":",
+    "=", None, None, None, None, None, None, None,
+    None, None, None, "+", "(", None, None, None,
+    "_", None, None, "%", ")", ";", "/", None,
+    None, None, None, None, None, None, None, None,
+    None, None, None, None, None, None, None, None,
+    None, None, None, None, None, None, None, None,
+    None, None, None, None, None, None, None, None,
+    None, None, None, None, None, None, None, None,
+    None, None, None, None, None, None, None, None,
+    "\"", "$", "&", "'", "*", "<", ">", "@",
+    "[", "]", "^", "_", "`", "{", "}", "|",
+    "~", "А",
 ]
+
+CHAR_CODES = [ord(c) if c else 0 for c in CHARS]

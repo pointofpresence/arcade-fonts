@@ -39,7 +39,6 @@ def generate_case_map():
     return case_map
 
 
-
 def auto_duplicate_case(font_data):
     """ Generate a copy of the font data with additional characters for paired upper/lower case letters. """
 
@@ -60,10 +59,10 @@ def pixel_to_bitmask(row):
     return sum(1 << (15 - i) for i in range(16) if row[i])
 
 
-def upscale_and_offset_glyph(glyph_8x8, offset_row=5, offset_col=3, scale=2):
+def upscale_and_offset_glyph(glyph_8x8, offset_row=0, offset_col=0, scale=1):
     """
     Scales an 8x8 glyph to 16x16, enlarging each pixel by scale x scale,
-    and shifts it so that the upper-left corner of the glyph ends up at (offset_row, offset_col).
+    and shifts it so that the lower-left corner of the glyph ends up at (offset_row, offset_col).
     """
 
     # Creating an empty 16x16 matrix
@@ -73,28 +72,30 @@ def upscale_and_offset_glyph(glyph_8x8, offset_row=5, offset_col=3, scale=2):
     for i in range(8):
         for j in range(8):
             if glyph_8x8[i, j]:  # if the pixel is black
-                row_0 = offset_row + i * scale
-                col_0 = offset_col + (7 - j) * scale  # invert columns
+                row_0 = offset_row + 15 - (7 - i) * scale
+                col_0 = offset_col + j * scale
 
-                # We set up the scale x scale block
                 for scale_i in range(scale):
                     for scale_j in range(scale):
-                        if row_0 + scale_i < 16 and col_0 + scale_j < 16:
-                            result[row_0 + scale_i, col_0 + scale_j] = 1
+                        x_pos = row_0 - scale_i
+                        y_pos = 15 - (col_0 + scale_j)
+
+                        if 0 <= x_pos < 16 and 0 <= y_pos < 16:
+                            result[x_pos, y_pos] = 1
 
     return result
 
 
 def image_to_pixel_font_8x8(
-        *,
-        image_path,
-        output_json_path,
-        offset_row=5,
-        offset_col=3,
-        scale=2,
-        letter_space=64,
-        name="font",
-        copy="Copyright (c) 2025",
+    *,
+    image_path,
+    output_json_path,
+    offset_row=0,
+    offset_col=0,
+    scale=1,
+    letter_space=64,
+    name="font",
+    copy="Copyright (c) 2025",
 ):
     """ Converts an image (NxM, multiple of 8) to 16x16 JSON format with scaling and offsetting. """
 
@@ -149,6 +150,8 @@ def image_to_pixel_font_8x8(
     font_data["basefont_top"] = "0"
     font_data["basefont"] = "Arial"
     font_data["basefont2"] = ""
+    font_data["monospacewidth"] = "8"
+    font_data["monospace"] = False
 
     with open(output_json_path, 'w', encoding='utf-8') as f_handle:
         # noinspection PyTypeChecker
