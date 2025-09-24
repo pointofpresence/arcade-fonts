@@ -18,7 +18,7 @@ CHARS = [
     None, None, None, None, None, None, None, None,
     "\"", "$", "&", "'", "*", "<", ">", "@",
     "[", "]", "^", "_", "`", "{", "}", "|",
-    "~", "А",
+    "~", "А", "Б",
 ]
 
 CHAR_CODES = [ord(c) if c else 0 for c in CHARS]
