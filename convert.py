@@ -59,11 +59,14 @@ def pixel_to_bitmask(row):
     return sum(1 << (15 - i) for i in range(16) if row[i])
 
 
-def upscale_and_offset_glyph(glyph_8x8, offset_row=0, offset_col=0, scale=1):
+def upscale_and_offset_glyph(glyph_8x8, offset_row=0, offset_col=0, scale=1, finetune=(0, 0)):
     """
     Scales an 8x8 glyph to 16x16, enlarging each pixel by scale x scale,
     and shifts it so that the lower-left corner of the glyph ends up at (offset_row, offset_col).
     """
+
+    offset_x = 2 + finetune[0]
+    offset_y = -4 + finetune[1]
 
     # Creating an empty 16x16 matrix
     result = np.zeros((16, 16), dtype=int)
@@ -72,8 +75,8 @@ def upscale_and_offset_glyph(glyph_8x8, offset_row=0, offset_col=0, scale=1):
     for i in range(8):
         for j in range(8):
             if glyph_8x8[i, j]:  # if the pixel is black
-                row_0 = offset_row + 15 - (7 - i) * scale
-                col_0 = offset_col + j * scale
+                row_0 = offset_row + 15 - (7 - i) * scale + offset_y
+                col_0 = offset_col + j * scale + offset_x
 
                 for scale_i in range(scale):
                     for scale_j in range(scale):
@@ -96,8 +99,14 @@ def image_to_pixel_font_8x8(
     letter_space=64,
     name="font",
     copy="Copyright (c) 2025",
+    monospacewidth=8,
+    monospace=False,
+    finetune=None,
 ):
     """ Converts an image (NxM, multiple of 8) to 16x16 JSON format with scaling and offsetting. """
+
+    if finetune is None:
+        finetune = {}
 
     img = Image.open(image_path).convert("L")  # grayscale
     img_array = np.array(img)
@@ -133,7 +142,13 @@ def image_to_pixel_font_8x8(
             glyph_binary = (glyph_8x8 < 128).astype(int)
 
             # Scale and shift
-            glyph_16x16 = upscale_and_offset_glyph(glyph_binary, offset_row, offset_col, scale)
+            glyph_16x16 = upscale_and_offset_glyph(
+                glyph_binary,
+                offset_row,
+                offset_col,
+                scale,
+                finetune.get(chr(code), (0, 0))
+            )
 
             # Convert to an array of 16 numbers (bit masks)
             row_values = [pixel_to_bitmask(row) for row in glyph_16x16]
@@ -145,13 +160,13 @@ def image_to_pixel_font_8x8(
     font_data["name"] = name
     font_data["copy"] = copy
     font_data["letterspace"] = letter_space
-    font_data["basefont_size"] = "512"
-    font_data["basefont_left"] = "62"
-    font_data["basefont_top"] = "0"
+    font_data["basefont_size"] = 512
+    font_data["basefont_left"] = 62
+    font_data["basefont_top"] = 0
     font_data["basefont"] = "Arial"
     font_data["basefont2"] = ""
-    font_data["monospacewidth"] = "8"
-    font_data["monospace"] = False
+    font_data["monospacewidth"] = monospacewidth
+    font_data["monospace"] = monospace
 
     with open(output_json_path, 'w', encoding='utf-8') as f_handle:
         # noinspection PyTypeChecker
