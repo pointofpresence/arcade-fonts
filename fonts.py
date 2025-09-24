@@ -2,6 +2,20 @@
 # pylint: disable=missing-module-docstring
 
 FONTS = [
+    {
+        "name": "Dangerous Seed",
+        "file": "SEED.png",
+        "output": "SEED.json",
+    }, {
+        "name": "Dangerous Seed Monospaced",
+        "file": "SEED.png",
+        "output": "SEED Mono.json",
+        "monospace": True,
+        "finetune": {
+            ",": (0, 1)
+        }
+    },
+
     {"name": "7 Custom", "file": "7.png", "offset_row": 4, "offset_col": 6, "scale": 1, "letter_space": 64,
      "copy": "Copyright (c) 2025", "output": "7.json"},
     {"name": "7MOD", "file": "7MOD.png", "offset_row": 4, "offset_col": 6, "scale": 1, "letter_space": 64,
@@ -349,8 +363,7 @@ FONTS = [
      "copy": "Copyright (c) 2025", "output": "sboom.json"},
     {"name": "sdi", "file": "sdi.png", "offset_row": 4, "offset_col": 6, "scale": 1, "letter_space": 64,
      "copy": "Copyright (c) 2025", "output": "sdi.json"},
-    {"name": "Dangerous Seed", "file": "SEED.png", "offset_row": 4, "offset_col": 6, "scale": 1, "letter_space": 64,
-     "copy": "Copyright (c) 2025", "output": "SEED.json"},
+
     {"name": "sf2", "file": "sf2.png", "offset_row": 4, "offset_col": 6, "scale": 1, "letter_space": 64,
      "copy": "Copyright (c) 2025", "output": "sf2.json"},
     {"name": "sfz3", "file": "sfz3.png", "offset_row": 4, "offset_col": 6, "scale": 1, "letter_space": 64,

@@ -765,10 +765,10 @@
     0,
     0,
     0,
+    0,
     48,
     48,
     24,
-    0,
     0,
     0,
     0
@@ -1781,7 +1781,7 @@
     0,
     0
   ],
-  "name": "Dangerous Seed",
+  "name": "Dangerous Seed Monospaced",
   "copy": "Copyright (c) 2025",
   "letterspace": 64,
   "basefont_size": 512,
@@ -1790,5 +1790,5 @@
   "basefont": "Arial",
   "basefont2": "",
   "monospacewidth": 8,
-  "monospace": false
+  "monospace": true
 }
